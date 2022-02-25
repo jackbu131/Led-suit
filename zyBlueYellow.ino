@@ -10,9 +10,9 @@ void blueYellowLoop() {
 
   for (int j=blueLocation;j<RL_PIXEL_COUNT;j++){
     if (blueInd<3){
-      legRight.setPixelColor(j,handRight.Color(0/10,whiteNum/10,0/10));
+      legRight.setPixelColor(j,colorClass.Color(0/10,whiteNum/10,0/10));
       } else {
-        legRight.setPixelColor(j,handRight.Color(whiteNum/10,0/10,whiteNum/10));
+        legRight.setPixelColor(j,colorClass.Color(whiteNum/10,0/10,whiteNum/10));
       }
       blueInd++;
       if(blueInd==6){
@@ -23,9 +23,9 @@ void blueYellowLoop() {
     blueInd=0;
   for (int j=0;j<RL_PIXEL_COUNT;j++){
     if (blueInd<3){
-      legLeft.setPixelColor(j,handRight.Color(0/10,whiteNum/10,0/10));
+      legLeft.setPixelColor(j,colorClass.Color(0/10,whiteNum/10,0/10));
       } else {
-        legLeft.setPixelColor(j,handRight.Color(whiteNum/10,0/10,whiteNum/10));
+        legLeft.setPixelColor(j,colorClass.Color(whiteNum/10,0/10,whiteNum/10));
       }
       blueInd++;
       if(blueInd==6){
@@ -35,9 +35,9 @@ void blueYellowLoop() {
     blueInd=0;
   for (int j=0;j<RL_PIXEL_COUNT;j++){
     if (blueInd<3){
-      body.setPixelColor(j,handRight.Color(0/10,whiteNum/10,0/10));
+      body.setPixelColor(j,colorClass.Color(0/10,whiteNum/10,0/10));
       } else {
-        body.setPixelColor(j,handRight.Color(whiteNum/10,0/10,whiteNum/10));
+        body.setPixelColor(j,colorClass.Color(whiteNum/10,0/10,whiteNum/10));
       }
       blueInd++;
       if(blueInd==6){
@@ -47,9 +47,9 @@ void blueYellowLoop() {
     blueInd=0;
   for (int j=0;j<RL_PIXEL_COUNT;j++){
     if (blueInd<3){
-      handLeft.setPixelColor(j,handRight.Color(0/10,whiteNum/10,0/10));
+      handLeft.setPixelColor(j,colorClass.Color(0/10,whiteNum/10,0/10));
       } else {
-        handLeft.setPixelColor(j,handRight.Color(whiteNum/10,0/10,whiteNum/10));
+        handLeft.setPixelColor(j,colorClass.Color(whiteNum/10,0/10,whiteNum/10));
       }
       blueInd++;
       if(blueInd==6){
@@ -59,9 +59,9 @@ void blueYellowLoop() {
     blueInd=0;
   for (int j=0;j<RL_PIXEL_COUNT;j++){
     if (blueInd<3){
-      handRight.setPixelColor(j,handRight.Color(0/10,whiteNum/10,0/10));
+      handRight.setPixelColor(j,colorClass.Color(0/10,whiteNum/10,0/10));
       } else {
-        handRight.setPixelColor(j,handRight.Color(whiteNum/10,0/10,whiteNum/10));
+        handRight.setPixelColor(j,colorClass.Color(whiteNum/10,0/10,whiteNum/10));
       }
       blueInd++;
       if(blueInd==6){
@@ -71,9 +71,9 @@ void blueYellowLoop() {
     blueInd=0;
   for (int j=0;j<RL_PIXEL_COUNT;j++){
     if (blueInd<3){
-      head.setPixelColor(j,handRight.Color(0/10,whiteNum/10,0/10));
+      head.setPixelColor(j,colorClass.Color(0/10,whiteNum/10,0/10));
       } else {
-        head.setPixelColor(j,handRight.Color(whiteNum/10,0/10,whiteNum/10));
+        head.setPixelColor(j,colorClass.Color(whiteNum/10,0/10,whiteNum/10));
       }
       blueInd++;
       if(blueInd==6){

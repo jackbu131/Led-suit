@@ -16,12 +16,12 @@ void snakeLoop() {
       
       
            for (int k=j; k<j+sizeOfSnake; k++){
-                    legRight.setPixelColor(k,handRight.Color(RED_SNAKE , GREEN_SNAKE , BLUE_SNAKE));
+                    legRight.setPixelColor(k,colorClass.Color(RED_SNAKE , GREEN_SNAKE , BLUE_SNAKE));
             }
           legRight.show();
           delay(delaySnake);
          for (int k=j; k<j+sizeOfSnake; k++){
-          legRight.setPixelColor(k,handRight.Color(0x00,0x00,0x00));
+          legRight.setPixelColor(k,colorClass.Color(0x00,0x00,0x00));
            }
           legRight.show();
           
@@ -30,12 +30,12 @@ void snakeLoop() {
     }
           for (int j=0; j<LL_PIXEL_COUNT; j++){
             for (int k=j; k<j+sizeOfSnake; k++){
-                    legLeft.setPixelColor(k,handRight.Color(RED_SNAKE , GREEN_SNAKE , BLUE_SNAKE));
+                    legLeft.setPixelColor(k,colorClass.Color(RED_SNAKE , GREEN_SNAKE , BLUE_SNAKE));
             }
           legLeft.show();
           delay(delaySnake);
            for (int k=j; k<j+sizeOfSnake; k++){
-          legLeft.setPixelColor(k,handRight.Color(0x00,0x00,0x00));
+          legLeft.setPixelColor(k,colorClass.Color(0x00,0x00,0x00));
            }
           legLeft.show();
           

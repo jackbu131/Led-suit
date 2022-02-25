@@ -22,8 +22,8 @@ void fullBodyLoop() {
       numOfColor = 2.0;
       setColorFunc(&numOfColor, &RED , &GREEN , &BLUE);
       
-          legRight.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
-          legLeft.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
+          legRight.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
+          legLeft.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
           
           
     }
@@ -36,7 +36,7 @@ void fullBodyLoop() {
       for (int j=0; j<B_PIXEL_COUNT; j++){
           numOfColor = 2.1;
           setColorFunc(&numOfColor, &RED , &GREEN , &BLUE);
-          body.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
+          body.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
    
           }
           
@@ -48,8 +48,8 @@ void fullBodyLoop() {
          numOfColor = 2.2;
          setColorFunc(&numOfColor, &RED , &GREEN , &BLUE);
      
-         handLeft.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
-         handRight.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
+         handLeft.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
+         handRight.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
       }
       handRight.show();
       handLeft.show();
@@ -59,7 +59,7 @@ void fullBodyLoop() {
       for (int j=0; j<HE_PIXEL_COUNT; j++){
          numOfColor = 2.3;
          setColorFunc(&numOfColor, &RED , &GREEN , &BLUE);
-         head.setPixelColor(j, handRight.Color(RED,GREEN,BLUE));
+         head.setPixelColor(j, colorClass.Color(RED,GREEN,BLUE));
           }
           head.show();
           delay(bodyDelay);
@@ -67,7 +67,7 @@ void fullBodyLoop() {
        for (int j=0; j<HE_PIXEL_COUNT; j++){
          //numOfColor = 0;
          setColorFunc(&numOfColor, &RED , &GREEN , &BLUE);
-         head.setPixelColor(j, handRight.Color(RED,GREEN,BLUE));
+         head.setPixelColor(j, colorClass.Color(RED,GREEN,BLUE));
           }
           head.show();
           delay(bodyDelay);
@@ -76,8 +76,8 @@ void fullBodyLoop() {
          numOfColor = 0;
          setColorFunc(&numOfColor, &RED , &GREEN , &BLUE);
      
-         handLeft.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
-         handRight.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
+         handLeft.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
+         handRight.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
       }
       handRight.show();
       handLeft.show();
@@ -86,7 +86,7 @@ void fullBodyLoop() {
       for (int j=0; j<B_PIXEL_COUNT; j++){
           numOfColor = 0;
           setColorFunc(&numOfColor, &RED , &GREEN , &BLUE);
-          body.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
+          body.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
    
           }
           
@@ -96,8 +96,8 @@ void fullBodyLoop() {
       numOfColor = 0;
       setColorFunc(&numOfColor, &RED , &GREEN , &BLUE);
       
-          legRight.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
-          legLeft.setPixelColor(j,handRight.Color(RED,GREEN,BLUE));
+          legRight.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
+          legLeft.setPixelColor(j,colorClass.Color(RED,GREEN,BLUE));
           
           
     }

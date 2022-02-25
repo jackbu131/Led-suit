@@ -9,31 +9,31 @@ int whiteNum = 0xFF;
 
     for (int j=FlickerLocation; j<RL_PIXEL_COUNT; j=j+3){
       
-          legRight.setPixelColor(j,handRight.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
+          legRight.setPixelColor(j,colorClass.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
    
            
     }
           for (int j=FlickerLocation; j<LL_PIXEL_COUNT; j=j+3){
       
-          legLeft.setPixelColor(j,handRight.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
+          legLeft.setPixelColor(j,colorClass.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
    
           }
       for (int j=FlickerLocation; j<B_PIXEL_COUNT; j=j+3){
       
-          body.setPixelColor(j,handRight.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
+          body.setPixelColor(j,colorClass.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
           
    
           } 
       for (int j=FlickerLocation; j<LH_PIXEL_COUNT; j=j+3){
-        handLeft.setPixelColor(j,handRight.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
+        handLeft.setPixelColor(j,colorClass.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
    
           } 
           for (int j=FlickerLocation; j<RH_PIXEL_COUNT; j=j+3){
-        handRight.setPixelColor(j,handRight.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
+        handRight.setPixelColor(j,colorClass.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
 
           }
       for (int j=FlickerLocation; j<HE_PIXEL_COUNT; j=j+3){
-         head.setPixelColor(j, handRight.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
+         head.setPixelColor(j, colorClass.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity));
           }
           
   handRight.show();
@@ -45,31 +45,31 @@ int whiteNum = 0xFF;
   delay(delayLight);
       for (int j=FlickerLocation; j<RL_PIXEL_COUNT; j=j+3){
       
-          legRight.setPixelColor(j,handRight.Color(0x00, 0x00, 0x00));
+          legRight.setPixelColor(j,colorClass.Color(0x00, 0x00, 0x00));
    
            
     }
           for (int j=FlickerLocation; j<LL_PIXEL_COUNT; j=j+3){
       
-          legLeft.setPixelColor(j,handRight.Color(0x00, 0x00, 0x00));
+          legLeft.setPixelColor(j,colorClass.Color(0x00, 0x00, 0x00));
    
           }
       for (int j=FlickerLocation; j<B_PIXEL_COUNT; j=j+3){
       
-          body.setPixelColor(j,handRight.Color(0x00, 0x00, 0x00));
+          body.setPixelColor(j,colorClass.Color(0x00, 0x00, 0x00));
           
    
           } 
       for (int j=FlickerLocation; j<LH_PIXEL_COUNT; j=j+3){
-        handLeft.setPixelColor(j,handRight.Color(0x00, 0x00, 0x00));
+        handLeft.setPixelColor(j,colorClass.Color(0x00, 0x00, 0x00));
    
           } 
           for (int j=FlickerLocation; j<RH_PIXEL_COUNT; j=j+3){
-        handRight.setPixelColor(j,handRight.Color(0x00, 0x00, 0x00));
+        handRight.setPixelColor(j,colorClass.Color(0x00, 0x00, 0x00));
 
           }
       for (int j=FlickerLocation; j<HE_PIXEL_COUNT; j=j+3){
-         head.setPixelColor(j, handRight.Color(0x00, 0x00, 0x00));
+         head.setPixelColor(j, colorClass.Color(0x00, 0x00, 0x00));
           }
     handRight.show();
   handLeft.show();

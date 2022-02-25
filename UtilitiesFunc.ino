@@ -37,6 +37,11 @@ const int NEO_PIXEL_PIN6 = 6;
 const int NEO_PIXEL_PIN7 = 7;
 const int NEO_PIXEL_PIN8 = 8;
 
+
+const int ColorManagementFakeOin = 100;
+
+
+
 const int RH_PIXEL_COUNT = 47;
 const int LH_PIXEL_COUNT = 41;
 const int RL_PIXEL_COUNT = 70;
@@ -69,6 +74,8 @@ Adafruit_NeoPixel legRight = Adafruit_NeoPixel(RL_PIXEL_COUNT, NEO_PIXEL_PIN4, N
 Adafruit_NeoPixel legLeft = Adafruit_NeoPixel(LL_PIXEL_COUNT, NEO_PIXEL_PIN3, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel body = Adafruit_NeoPixel(B_PIXEL_COUNT, NEO_PIXEL_PIN5, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel head = Adafruit_NeoPixel(HE_PIXEL_COUNT, NEO_PIXEL_PIN8, NEO_GRB + NEO_KHZ800);
+
+Adafruit_NeoPixel colorClass = Adafruit_NeoPixel(1, ColorManagementFakeOin, NEO_GRB + NEO_KHZ800);
 char commandBuffer[MAX_CHARS];
 
 
@@ -264,7 +271,7 @@ uint32_t pixelHSVtoRGBColor(float hue, float saturation, float value, int colorM
   Serial.print(255*g,6);
   Serial.print(" ");
   Serial.println(255*b,6);*/
-  return handRight.Color(int(255*r), int(255*g), int(255*b));
+  return colorClass.Color(int(255*r), int(255*g), int(255*b));
 }
 
 
