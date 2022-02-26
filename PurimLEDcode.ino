@@ -21,16 +21,6 @@ void setup() {
 }
 
 void loop() {
-  
-  int fd = *funcDecoder;
-//Serial.println("Current funcDecoder : "+(String)(fd));
-//Serial.print(digitalRead(PUSH_BUTTON_PIN1));
-//Serial.print(",");
-//Serial.print(digitalRead(PUSH_BUTTON_PIN2));
-//Serial.print(",");
-//Serial.print(digitalRead(PUSH_BUTTON_PIN3));
-//Serial.print(",");
-//Serial.println(digitalRead(PUSH_BUTTON_PIN4));
   switch(*funcDecoder){
     case 0:{ basicMusicLoop();
     
@@ -50,25 +40,16 @@ void loop() {
       else{
        numOfColorSnake++;
       }
-      
       snakeLoop();
-    
-      break;
-    }case 4:{superSayiaLoop();
-    
       break;
     }
-    case 5:{flickerLoop();
-    
-    
+    case 5:{
+        flickerLoop();
       break;
     }
      case 6:{blueYellowLoop();
-    
-    
       break;
     }
   }
-
 }
 

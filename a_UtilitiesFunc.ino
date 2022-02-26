@@ -1,12 +1,6 @@
-// Audio Spectrum Display
-// Copyright 2013 Tony DiCola (tony@tonydicola.com)
-
-// This code is part of the guide at http://learn.adafruit.com/fft-fun-with-fourier-transforms/
-
 #define ARM_MATH_CM4
 #include <arm_math.h>
 #include <Adafruit_NeoPixel.h>
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // CONIFIGURATION 
@@ -21,13 +15,12 @@ int LEDS_ENABLED = 1;                  // Control if the LED's should display th
 int INTENCITY_LEVEL_UP_PIN = 10;    
 int INTENCITY_LEVEL_DOWN_PIN = 11;       
                                        // Useful for turning the LED display on and off with commands from the serial port.
-const int FFT_SIZE = 256;              // Size of the FFT.  Realistically can only be at most 256 
+const int FFT_SIZE = 256;              // Size of the FFT.  Realistically can only be at most 256
                                        // without running out of memory for buffers and other state.
 const int AUDIO_INPUT_PIN = 14;        // Input ADC pin for audio data.
 const int ANALOG_READ_RESOLUTION = 10; // Bits of resolution for the ADC.
 const int ANALOG_READ_AVERAGING = 16;  // Number of samples to average with each ADC reading.
 const int POWER_LED_PIN = 13;          // Output pin for power LED (pin 13 to use Teensy 3.0's onboard LED).
-
 
 
 const int NEO_PIXEL_PIN3 = 3;
@@ -37,10 +30,7 @@ const int NEO_PIXEL_PIN6 = 6;
 const int NEO_PIXEL_PIN7 = 7;
 const int NEO_PIXEL_PIN8 = 8;
 
-
 const int ColorManagementFakeOin = 100;
-
-
 
 const int RH_PIXEL_COUNT = 47;
 const int LH_PIXEL_COUNT = 41;
@@ -49,14 +39,7 @@ const int LL_PIXEL_COUNT = 80;
 const int B_PIXEL_COUNT = 74;
 const int HE_PIXEL_COUNT = 40;
 
-
-
-
-// Output pin for neo handRight.
-const int NUM_OF_WINDOWS = 4;         // Number of neo handRight.  You should be able to increase this without
-                                       // any other changes to the program.
 const int MAX_CHARS = 65;              // Max size of the input command buffer
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -64,10 +47,6 @@ const int MAX_CHARS = 65;              // Max size of the input command buffer
 // These shouldn't be modified unless you know what you're doing.
 ////////////////////////////////////////////////////////////////////////////////
 
-IntervalTimer samplingTimer;
-float samples[FFT_SIZE*2];
-float magnitudes[FFT_SIZE];
-int sampleCounter = 0;
 Adafruit_NeoPixel handRight = Adafruit_NeoPixel(RH_PIXEL_COUNT, NEO_PIXEL_PIN6, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel handLeft = Adafruit_NeoPixel(LH_PIXEL_COUNT, NEO_PIXEL_PIN7, NEO_GRB + NEO_KHZ800);
 Adafruit_NeoPixel legRight = Adafruit_NeoPixel(RL_PIXEL_COUNT, NEO_PIXEL_PIN4, NEO_GRB + NEO_KHZ800);
@@ -78,116 +57,67 @@ Adafruit_NeoPixel head = Adafruit_NeoPixel(HE_PIXEL_COUNT, NEO_PIXEL_PIN8, NEO_G
 Adafruit_NeoPixel colorClass = Adafruit_NeoPixel(1, ColorManagementFakeOin, NEO_GRB + NEO_KHZ800);
 char commandBuffer[MAX_CHARS];
 
+volatile unsigned long last_micros;
 
 void Interrupt() {
-  //if((*funcDecoder)>=0 && (*funcDecoder)<=2){
-   (*funcDecoder)++;
-    delay(300);
-    if((*funcDecoder)==7)
-    {
-      (*funcDecoder) = 0;
-      delay(300);
-     }
-     
-    // (*funcDecoder) = 3;
-  //}
-    
-    Serial.println("funcDecoder!!!!!!");
-    loop();
-}
-/*
-void Interrupt1() {
-  if(numOfColorSnake != 1.0){
-    numOfColorSnake = 1.0;
+  if((long)(micros() - last_micros) >= debouncing_time * 1000) {
+    (*funcDecoder)++
+    (*funcDecoder) = (*funcDecoder) % 6
+    last_micros = micros();
   }
-  numOfColorSnake = 2.0;
-    delay(300);
-    Serial.println("funcDecoder2!!!!!!!!1");
-
     loop();
 }
 
-void Interrupt2() {
-  if(funcDecoder!=4)funcDecoder=4;
-    //funcDecoder++;
-    delay(300);
-    Serial.println("funcDecoder3!!!!!");
-
-    delay(10);
-    loop();
-}
-void Interrupt3() {
-  if(funcDecoder!=5)funcDecoder=5;
-    //funcDecoder++;
-    delay(300);
-    Serial.println("funcDecoder5!!!!!!");
-
-    delay(10);
-    loop();
-}
-*/
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN SKETCH FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
 
 void utilitySetup() {
   // Set up serial port.
-  delay(1000);
-  Serial.begin(38400);
-  
-  pinMode(INTENCITY_LEVEL_UP_PIN,INPUT);
-  pinMode(INTENCITY_LEVEL_DOWN_PIN,INPUT);
-  pinMode(0,INPUT);
- pinMode(PUSH_BUTTON_PIN4,INPUT);
-  attachInterrupt(PUSH_BUTTON_PIN4, Interrupt, RISING);
-  
- 
- /* pinMode(PUSH_BUTTON_PIN3,INPUT);
-  //attachInterrupt(PUSH_BUTTON_PIN3, Interrupt1, RISING);
+    delay(1000);
+    Serial.begin(38400);
 
-  pinMode(PUSH_BUTTON_PIN3,INPUT);
-  //attachInterrupt(PUSH_BUTTON_PIN3, Interrupt2, RISING);
-  pinMode(PUSH_BUTTON_PIN4,INPUT);
- // attachInterrupt(PUSH_BUTTON_PIN4, Interrupt3, RISING);
- */
-  
-  
-  
-  // Set up ADC and audio input.
-  pinMode(AUDIO_INPUT_PIN, INPUT);
-  analogReadResolution(ANALOG_READ_RESOLUTION);
-  analogReadAveraging(ANALOG_READ_AVERAGING);
-  
-  // Turn on the power indicator LED.
-  pinMode(POWER_LED_PIN, OUTPUT);
-  digitalWrite(POWER_LED_PIN, HIGH);
+    pinMode(INTENCITY_LEVEL_UP_PIN,INPUT);
+    pinMode(INTENCITY_LEVEL_DOWN_PIN,INPUT);
+    pinMode(0,INPUT);
+    pinMode(PUSH_BUTTON_PIN4,INPUT);
+    attachInterrupt(PUSH_BUTTON_PIN4, Interrupt, RISING);
+
+    // Set up ADC and audio input.
+    pinMode(AUDIO_INPUT_PIN, INPUT);
+    analogReadResolution(ANALOG_READ_RESOLUTION);
+    analogReadAveraging(ANALOG_READ_AVERAGING);
+
+    // Turn on the power indicator LED.
+    pinMode(POWER_LED_PIN, OUTPUT);
+    digitalWrite(POWER_LED_PIN, HIGH);
   
   
   // Initialize neo pixel library and turn off the LEDs
-  handRight.begin();
-  handRight.show(); 
-  handLeft.begin();
-  handLeft.show(); 
-   legRight.begin();
- legRight.show(); 
-  legLeft.begin();
-  legLeft.show();
+    handRight.begin();
+    handRight.show();
+    handLeft.begin();
+    handLeft.show();
+    legRight.begin();
+    legRight.show();
+    legLeft.begin();
+    legLeft.show();
     head.begin();
- head.show(); 
-  body.begin();
-  body.show(); 
+    head.show();
+    body.begin();
+    body.show();
   
   
-  // Clear the input command buffer
-  memset(commandBuffer, 0, sizeof(commandBuffer));
-  
-  // Initialize spectrum display
+    // Clear the input command buffer
+    memset(commandBuffer, 0, sizeof(commandBuffer));
 
-  spectrumSetup();
-  complexSpectrumSetup();
-  fourSpectrumSetup();
-  // Begin sampling audio
-  samplingBegin();
+    // Initialize spectrum display
+
+    spectrumSetup();
+    complexSpectrumSetup();
+    fourSpectrumSetup();
+    // Begin sampling audio
+    samplingBegin();
 }
 
 
@@ -278,6 +208,10 @@ uint32_t pixelHSVtoRGBColor(float hue, float saturation, float value, int colorM
 ////////////////////////////////////////////////////////////////////////////////
 // SAMPLING FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
+IntervalTimer samplingTimer;
+float samples[FFT_SIZE*2];
+float magnitudes[FFT_SIZE];
+int sampleCounter = 0;
 
 void samplingCallback() {
   // Read from the ADC and store the sample data
