@@ -29,6 +29,7 @@ const int NEO_PIXEL_PIN5 = 5;
 const int NEO_PIXEL_PIN6 = 6;
 const int NEO_PIXEL_PIN7 = 7;
 const int NEO_PIXEL_PIN8 = 8;
+const int NEO_PIXEL_PIN9 = 8;
 
 const int ColorManagementFakeOin = 100;
 
@@ -39,6 +40,9 @@ const int LL_PIXEL_COUNT = 80;
 const int B_PIXEL_COUNT = 74;
 const int HE_PIXEL_COUNT = 40;
 
+const int MAX_NUM_OF_LEDS = 70;
+
+
 const int MAX_CHARS = 65;              // Max size of the input command buffer
 
 
@@ -47,12 +51,13 @@ const int MAX_CHARS = 65;              // Max size of the input command buffer
 // These shouldn't be modified unless you know what you're doing.
 ////////////////////////////////////////////////////////////////////////////////
 
-Adafruit_NeoPixel handRight = Adafruit_NeoPixel(RH_PIXEL_COUNT, NEO_PIXEL_PIN6, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel handLeft = Adafruit_NeoPixel(LH_PIXEL_COUNT, NEO_PIXEL_PIN7, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel legRight = Adafruit_NeoPixel(RL_PIXEL_COUNT, NEO_PIXEL_PIN4, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel legLeft = Adafruit_NeoPixel(LL_PIXEL_COUNT, NEO_PIXEL_PIN3, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel body = Adafruit_NeoPixel(B_PIXEL_COUNT, NEO_PIXEL_PIN5, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel head = Adafruit_NeoPixel(HE_PIXEL_COUNT, NEO_PIXEL_PIN8, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel right_front_center = Adafruit_NeoPixel(RH_PIXEL_COUNT, NEO_PIXEL_PIN6, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel right_front_right = Adafruit_NeoPixel(LH_PIXEL_COUNT, NEO_PIXEL_PIN7, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel left_front_center = Adafruit_NeoPixel(RL_PIXEL_COUNT, NEO_PIXEL_PIN4, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel left_front_left = Adafruit_NeoPixel(LL_PIXEL_COUNT, NEO_PIXEL_PIN3, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_center = Adafruit_NeoPixel(B_PIXEL_COUNT, NEO_PIXEL_PIN5, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_left = Adafruit_NeoPixel(HE_PIXEL_COUNT, NEO_PIXEL_PIN8, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_right = Adafruit_NeoPixel(HE_PIXEL_COUNT, NEO_PIXEL_PIN9, NEO_GRB + NEO_KHZ800);
 
 Adafruit_NeoPixel colorClass = Adafruit_NeoPixel(1, ColorManagementFakeOin, NEO_GRB + NEO_KHZ800);
 char commandBuffer[MAX_CHARS];
@@ -81,7 +86,7 @@ void utilitySetup() {
     pinMode(INTENCITY_LEVEL_DOWN_PIN,INPUT);
     pinMode(0,INPUT);
     pinMode(PUSH_BUTTON_PIN4,INPUT);
-    attachInterrupt(PUSH_BUTTON_PIN4, Interrupt, RISING);
+//     attachInterrupt(PUSH_BUTTON_PIN4, Interrupt, RISING);
 
     // Set up ADC and audio input.
     pinMode(AUDIO_INPUT_PIN, INPUT);
@@ -94,20 +99,14 @@ void utilitySetup() {
   
   
   // Initialize neo pixel library and turn off the LEDs
-    handRight.begin();
-    handRight.show();
-    handLeft.begin();
-    handLeft.show();
-    legRight.begin();
-    legRight.show();
-    legLeft.begin();
-    legLeft.show();
-    head.begin();
-    head.show();
-    body.begin();
-    body.show();
-  
-  
+    setup_one_strip(right_front_center)
+    setup_one_strip(right_front_right)
+    setup_one_strip(left_front_center)
+    setup_one_strip(left_front_left)
+    setup_one_strip(back_center)
+    setup_one_strip(back_left)
+    setup_one_strip(back_right)
+
     // Clear the input command buffer
     memset(commandBuffer, 0, sizeof(commandBuffer));
 
@@ -120,6 +119,13 @@ void utilitySetup() {
     samplingBegin();
 }
 
+
+void setup_one_strip(Adafruit_NeoPixel strip, int b){
+    strip.begin();
+    strip.setBrightness(b);
+    strip.clear();
+    strip.show();
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -236,5 +242,35 @@ boolean samplingIsDone() {
   return sampleCounter >= FFT_SIZE*2;
 }
 
+
+void show_all(){
+    right_front_center.show();
+    right_front_right.show();
+    left_front_center.show();
+    left_front_left.show();
+    back_center.show();
+    back_left.show();
+    back_right.show();
+}
+
+void set_color_all_strips(int index, uint32_t rgb){
+    right_front_center.setPixelColor(index, rgb);
+    right_front_right.setPixelColor(index, rgb);
+    left_front_center.setPixelColor(index, rgb);
+    left_front_left.setPixelColor(index, rgb);
+    back_center.setPixelColor(index, rgb);
+    back_left.setPixelColor(index, rgb);
+    back_right.setPixelColor(index, rgb);
+}
+
+void clear_all(){
+    right_front_center.clear();
+    right_front_right.clear();
+    left_front_center.clear();
+    left_front_left.clear();
+    back_center.clear();
+    back_left.clear();
+    back_right.clear();
+}
 
 

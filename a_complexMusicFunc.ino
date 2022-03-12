@@ -5,10 +5,8 @@
 
 const int NUM_OF_WINDOWS_FOR_COMPLEX = 77;  
 const int COMPLEX_COLOR_MODIFIER = 60;
-  float frequencyWindowForComplex[NUM_OF_WINDOWS_FOR_COMPLEX+1];
-  float huesForComplex[NUM_OF_WINDOWS_FOR_COMPLEX];
-
-  boolean complexIsChosen = false;
+float frequencyWindowForComplex[NUM_OF_WINDOWS_FOR_COMPLEX+1];
+float huesForComplex[NUM_OF_WINDOWS_FOR_COMPLEX];
 
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN SKETCH FUNCTIONS
@@ -16,9 +14,7 @@ const int COMPLEX_COLOR_MODIFIER = 60;
 
 
 void complexMusicLoop() {
-  complexIsChosen = true;
   // Calculate FFT if a full sample is available.
-  
   if (samplingIsDone()) {
     // Run FFT on sample data.
     arm_cfft_radix4_instance_f32 fft_inst;
@@ -27,22 +23,14 @@ void complexMusicLoop() {
     // Calculate magnitude of complex numbers output by the FFT.
     arm_cmplx_mag_f32(samples, magnitudes, FFT_SIZE);
   
-    if (LEDS_ENABLED == 1)
-    {
-      
+    if (LEDS_ENABLED == 1){
       complexSpectrumLoop();
     }
   
     // Restart audio sampling.
     samplingBegin();
   }
-    
-  // Parse any pending commands.
- //parserLoop();
- delay(10);
 }
-
-
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -61,22 +49,30 @@ void complexSpectrumSetup() {
   delay(100);
   for (int i = 0; i < NUM_OF_WINDOWS_FOR_COMPLEX; ++i) {
     huesForComplex[i] = 360.0*(float(i)/float(NUM_OF_WINDOWS_FOR_COMPLEX-1));
-//   Serial.println((String)huesForComplex[i]);
   }
 }
 
+
 void complexSpectrumLoop() {
-  // Update each LED based on the intensity of the audio 
-  // in the associated frequency window.
-  float intensity, otherMean;
-  for (int i = 0; i < NUM_OF_WINDOWS_FOR_COMPLEX; ++i) {
-    //int k=0;
-    //if(i<4){k=0;}else if(i<8){k=6;} else if (i<12){k=11;}else {k=15;}
-    windowMean(magnitudes, 
-               frequencyToBin(frequencyWindowForComplex[i]),
-               frequencyToBin(frequencyWindowForComplex[i+1]),
-               &intensity,
-               &otherMean);
+// Update each LED based on the intensity of the audio
+// in the associated frequency window.
+    float intensity, otherMean;
+    for (int i = 0; i < NUM_OF_WINDOWS_FOR_COMPLEX; ++i) {
+        uint32_t rgb = pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity,COMPLEX_COLOR_MODIFIER)
+        set_color_all_strips(i, rgb);
+    }
+    show_all();
+}
+
+
+float getIntensity(){
+    windowMean(
+        magnitudes,
+        frequencyToBin(frequencyWindowForComplex[i]),
+        frequencyToBin(frequencyWindowForComplex[i+1]),
+        &intensity,
+        &otherMean
+    );
     // Convert intensity to decibels.
     intensity = 20.0*log10(intensity);
     // Scale the intensity and clamp between 0 and 1.0.
@@ -84,25 +80,5 @@ void complexSpectrumLoop() {
     intensity = intensity < 0.0 ? 0.0 : intensity;
     intensity /= (SPECTRUM_MAX_DB-SPECTRUM_MIN_DB);
     intensity = intensity > 1.0 ? 1.0 : intensity;
-
-  legRight.setPixelColor(i, pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity/10,COMPLEX_COLOR_MODIFIER ));
-  head.setPixelColor(i, pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity/10,COMPLEX_COLOR_MODIFIER));
-  handRight.setPixelColor(i, pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity/10,COMPLEX_COLOR_MODIFIER));
-  handLeft.setPixelColor(i, pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity/10,COMPLEX_COLOR_MODIFIER));
-  body.setPixelColor(i, pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity/10,COMPLEX_COLOR_MODIFIER));
-  legLeft.setPixelColor(i, pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity/10,COMPLEX_COLOR_MODIFIER));
-  
-
-  
+    return intensity
 }
-  handRight.show();
-  handLeft.show();
-  legRight.show();
-  legLeft.show();
-  body.show();
-  head.show();
-}
-
-
-
-
