@@ -3,11 +3,6 @@
 #include <Adafruit_NeoPixel.h>
 
 
-const int NUM_OF_WINDOWS_FOR_COMPLEX = 77;  
-const int COMPLEX_COLOR_MODIFIER = 60;
-float frequencyWindowForComplex[NUM_OF_WINDOWS_FOR_COMPLEX+1];
-float huesForComplex[NUM_OF_WINDOWS_FOR_COMPLEX];
-
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN SKETCH FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
@@ -56,16 +51,20 @@ void complexSpectrumSetup() {
 void complexSpectrumLoop() {
 // Update each LED based on the intensity of the audio
 // in the associated frequency window.
-    float intensity, otherMean;
+    float intensity = 0;
+    float otherMean = 0;
     for (int i = 0; i < NUM_OF_WINDOWS_FOR_COMPLEX; ++i) {
-        uint32_t rgb = pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity,COMPLEX_COLOR_MODIFIER)
+        intensity = getIntensity(i, otherMean, intensity);
+        uint32_t rgb = pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity, COMPLEX_COLOR_MODIFIER);
         set_color_all_strips(i, rgb);
+//        Serial.println(rgb);
     }
     show_all();
+//    delay(100);
 }
 
 
-float getIntensity(){
+float getIntensity(int i, float otherMean, float intensity){
     windowMean(
         magnitudes,
         frequencyToBin(frequencyWindowForComplex[i]),
@@ -80,5 +79,5 @@ float getIntensity(){
     intensity = intensity < 0.0 ? 0.0 : intensity;
     intensity /= (SPECTRUM_MAX_DB-SPECTRUM_MIN_DB);
     intensity = intensity > 1.0 ? 1.0 : intensity;
-    return intensity
+    return intensity;
 }

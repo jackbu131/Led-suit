@@ -4,21 +4,21 @@
 int FlickerLocation = 0;
 int delayLight = 7;
 int delayDark = 75;
+
+
 void flickerLoop() {
-int whiteNum = 0xFF;
-    uint32_t col = colorClass.Color(whiteNum/intensity,whiteNum/intensity,whiteNum/intensity)
-    for (int j=FlickerLocation; j<MAX_NUM_OF_LEDS; j=j+3){
-        set_color_all_strips(j, col);
-    }
-    show_all()
-    delay(delayLight);
-    clear_all()
-    show_all()
-    delay(delayDark);
-  
-    FlickerLocation++;
-    if(FlickerLocation==4){FlickerLocation=0;}
+  int flicker_intesity = 4;
+  int whiteNum = 0xFF;
+  uint32_t col = back_right.Color(whiteNum/flicker_intesity,whiteNum/flicker_intesity,whiteNum/flicker_intesity);
+  for (int j=FlickerLocation; j<MAX_NUM_OF_LEDS; j=j+3){
+      set_color_all_strips(j, col);
+  }
+  show_all();
+  delay(delayLight);
+  clear_all();
+  show_all();
+  delay(delayDark);
+
+  FlickerLocation++;
+  if(FlickerLocation==4){FlickerLocation=0;}
 }
-
-
-

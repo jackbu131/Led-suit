@@ -7,70 +7,35 @@
 // These values can be changed to alter the behavior of the spectrum display.
 ////////////////////////////////////////////////////////////////////////////////
 
-int SAMPLE_RATE_HZ = 9000;             // Sample rate of the audio in hertz.
-float SPECTRUM_MIN_DB = 30.0;          // Audio intensity (in decibels) that maps to low LED brightness.
-float SPECTRUM_MAX_DB = 60.0;          // Audio intensity (in decibels) that maps to high LED brightness.
-int LEDS_ENABLED = 1;                  // Control if the LED's should display the spectrum or not.  1 is true, 0 is false.  
-     
-int INTENCITY_LEVEL_UP_PIN = 10;    
-int INTENCITY_LEVEL_DOWN_PIN = 11;       
-                                       // Useful for turning the LED display on and off with commands from the serial port.
-const int FFT_SIZE = 256;              // Size of the FFT.  Realistically can only be at most 256
-                                       // without running out of memory for buffers and other state.
-const int AUDIO_INPUT_PIN = 14;        // Input ADC pin for audio data.
-const int ANALOG_READ_RESOLUTION = 10; // Bits of resolution for the ADC.
-const int ANALOG_READ_AVERAGING = 16;  // Number of samples to average with each ADC reading.
-const int POWER_LED_PIN = 13;          // Output pin for power LED (pin 13 to use Teensy 3.0's onboard LED).
-
-
-const int NEO_PIXEL_PIN3 = 3;
-const int NEO_PIXEL_PIN4 = 4;
-const int NEO_PIXEL_PIN5 = 5;
-const int NEO_PIXEL_PIN6 = 6;
-const int NEO_PIXEL_PIN7 = 7;
-const int NEO_PIXEL_PIN8 = 8;
-const int NEO_PIXEL_PIN9 = 8;
-
-const int ColorManagementFakeOin = 100;
-
-const int RH_PIXEL_COUNT = 47;
-const int LH_PIXEL_COUNT = 41;
-const int RL_PIXEL_COUNT = 70;
-const int LL_PIXEL_COUNT = 80;
-const int B_PIXEL_COUNT = 74;
-const int HE_PIXEL_COUNT = 40;
-
-const int MAX_NUM_OF_LEDS = 70;
-
-
-const int MAX_CHARS = 65;              // Max size of the input command buffer
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // INTERNAL STATE
 // These shouldn't be modified unless you know what you're doing.
 ////////////////////////////////////////////////////////////////////////////////
 
-Adafruit_NeoPixel right_front_center = Adafruit_NeoPixel(RH_PIXEL_COUNT, NEO_PIXEL_PIN6, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel right_front_right = Adafruit_NeoPixel(LH_PIXEL_COUNT, NEO_PIXEL_PIN7, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel left_front_center = Adafruit_NeoPixel(RL_PIXEL_COUNT, NEO_PIXEL_PIN4, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel left_front_left = Adafruit_NeoPixel(LL_PIXEL_COUNT, NEO_PIXEL_PIN3, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel back_center = Adafruit_NeoPixel(B_PIXEL_COUNT, NEO_PIXEL_PIN5, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel back_left = Adafruit_NeoPixel(HE_PIXEL_COUNT, NEO_PIXEL_PIN8, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel back_right = Adafruit_NeoPixel(HE_PIXEL_COUNT, NEO_PIXEL_PIN9, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel right_front_center(RH_PIXEL_COUNT, NEO_PIXEL_PIN17, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel right_front_right(LH_PIXEL_COUNT, NEO_PIXEL_PIN18, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel left_front_center(RL_PIXEL_COUNT, NEO_PIXEL_PIN19, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel left_front_left(LL_PIXEL_COUNT, NEO_PIXEL_PIN20, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_center(B_PIXEL_COUNT, NEO_PIXEL_PIN21, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_left(HE_PIXEL_COUNT, NEO_PIXEL_PIN22, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_right(HE_PIXEL_COUNT, NEO_PIXEL_PIN23, NEO_GRB + NEO_KHZ800);
 
-Adafruit_NeoPixel colorClass = Adafruit_NeoPixel(1, ColorManagementFakeOin, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel colorClass(30, ColorManagementFakeOin, NEO_GRB + NEO_KHZ800);
 char commandBuffer[MAX_CHARS];
 
+const int GLOBAL_BRIGHTNESS = 50;
+
 volatile unsigned long last_micros;
+int debouncing_time = 1;
 
 void Interrupt() {
   if((long)(micros() - last_micros) >= debouncing_time * 1000) {
-    (*funcDecoder)++
-    (*funcDecoder) = (*funcDecoder) % 6
+    (*funcDecoder)++;
+    (*funcDecoder) = (*funcDecoder) % 6;
     last_micros = micros();
   }
-    loop();
+//    loop();
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -82,10 +47,10 @@ void utilitySetup() {
     delay(1000);
     Serial.begin(38400);
 
-    pinMode(INTENCITY_LEVEL_UP_PIN,INPUT);
-    pinMode(INTENCITY_LEVEL_DOWN_PIN,INPUT);
-    pinMode(0,INPUT);
-    pinMode(PUSH_BUTTON_PIN4,INPUT);
+//    pinMode(INTENCITY_LEVEL_UP_PIN,INPUT);
+//    pinMode(INTENCITY_LEVEL_DOWN_PIN,INPUT);
+//    pinMode(0,INPUT);
+//    pinMode(PUSH_BUTTON_PIN4,INPUT);
 //     attachInterrupt(PUSH_BUTTON_PIN4, Interrupt, RISING);
 
     // Set up ADC and audio input.
@@ -99,32 +64,55 @@ void utilitySetup() {
   
   
   // Initialize neo pixel library and turn off the LEDs
-    setup_one_strip(right_front_center)
-    setup_one_strip(right_front_right)
-    setup_one_strip(left_front_center)
-    setup_one_strip(left_front_left)
-    setup_one_strip(back_center)
-    setup_one_strip(back_left)
-    setup_one_strip(back_right)
+    setup_all_strips(GLOBAL_BRIGHTNESS);
+    Serial.println("yacov");
 
     // Clear the input command buffer
     memset(commandBuffer, 0, sizeof(commandBuffer));
 
     // Initialize spectrum display
 
-    spectrumSetup();
+//    spectrumSetup();
     complexSpectrumSetup();
-    fourSpectrumSetup();
+//    fourSpectrumSetup();
     // Begin sampling audio
     samplingBegin();
+    touchSensorTimer.begin(touchSensorCallback, 100000);
 }
 
 
-void setup_one_strip(Adafruit_NeoPixel strip, int b){
-    strip.begin();
-    strip.setBrightness(b);
-    strip.clear();
-    strip.show();
+void setup_all_strips(int b){
+    right_front_center.begin();
+    right_front_right.begin();
+    left_front_center.begin();
+    left_front_left.begin();
+    back_center.begin();
+    back_left.begin();
+    back_right.begin();
+    
+    right_front_center.setBrightness(b);
+    right_front_right.setBrightness(b);
+    left_front_center.setBrightness(b);
+    left_front_left.setBrightness(b);
+    back_center.setBrightness(b);
+    back_left.setBrightness(b);
+    back_right.setBrightness(b);
+
+    right_front_center.clear();
+    right_front_right.clear();
+    left_front_center.clear();
+    left_front_left.clear();
+    back_center.clear();
+    back_left.clear();
+    back_right.clear();
+
+    right_front_center.show();
+    right_front_right.show();
+    left_front_center.show();
+    left_front_left.show();
+    back_center.show();
+    back_left.show();
+    back_right.show();
 }
 
 
@@ -207,17 +195,14 @@ uint32_t pixelHSVtoRGBColor(float hue, float saturation, float value, int colorM
   Serial.print(255*g,6);
   Serial.print(" ");
   Serial.println(255*b,6);*/
-  return colorClass.Color(int(255*r), int(255*g), int(255*b));
+  return back_right.Color(int(255*r), int(255*g), int(255*b));
 }
 
 
 ////////////////////////////////////////////////////////////////////////////////
 // SAMPLING FUNCTIONS
 ////////////////////////////////////////////////////////////////////////////////
-IntervalTimer samplingTimer;
-float samples[FFT_SIZE*2];
-float magnitudes[FFT_SIZE];
-int sampleCounter = 0;
+
 
 void samplingCallback() {
   // Read from the ADC and store the sample data
@@ -240,6 +225,29 @@ void samplingBegin() {
 
 boolean samplingIsDone() {
   return sampleCounter >= FFT_SIZE*2;
+}
+
+void touchSensorCallback(){
+  int newTouchSensorValue = touchRead(0);
+  bool isNewTouchSensorValueAboveThreshold = newTouchSensorValue > touchSensorThreshold;
+  if (isNewTouchSensorValueAboveThreshold == true && touchIsOn == false){
+    if (++touchSensorOnCounter >= 3){
+      touchIsOn = true;
+      (*funcDecoder) = ++(*funcDecoder) % 3;
+      touchSensorOffCounter = 0;
+    }
+  } else if (isNewTouchSensorValueAboveThreshold == true && touchIsOn == true){
+    touchSensorOffCounter = 0;
+    touchSensorOnCounter++;
+  } else if (isNewTouchSensorValueAboveThreshold == false && touchIsOn == true){
+    if (++touchSensorOffCounter >= 2){
+      touchIsOn = false;
+      touchSensorOnCounter = 0;
+    }
+  } else if (isNewTouchSensorValueAboveThreshold == false && touchIsOn == false){
+    touchSensorOffCounter++;
+    touchSensorOnCounter = 0;
+  }
 }
 
 
@@ -272,5 +280,3 @@ void clear_all(){
     back_left.clear();
     back_right.clear();
 }
-
-
