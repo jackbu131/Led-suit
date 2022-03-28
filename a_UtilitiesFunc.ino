@@ -14,29 +14,28 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 Adafruit_NeoPixel right_front_center(RH_PIXEL_COUNT, NEO_PIXEL_PIN17, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel right_front_right(LH_PIXEL_COUNT, NEO_PIXEL_PIN18, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel left_front_center(RL_PIXEL_COUNT, NEO_PIXEL_PIN19, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel left_front_left(LL_PIXEL_COUNT, NEO_PIXEL_PIN20, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel back_center(B_PIXEL_COUNT, NEO_PIXEL_PIN21, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel back_left(HE_PIXEL_COUNT, NEO_PIXEL_PIN22, NEO_GRB + NEO_KHZ800);
-Adafruit_NeoPixel back_right(HE_PIXEL_COUNT, NEO_PIXEL_PIN23, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel right_front_right(RH_PIXEL_COUNT, NEO_PIXEL_PIN18, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel left_front_center(RH_PIXEL_COUNT, NEO_PIXEL_PIN19, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel left_front_left(RH_PIXEL_COUNT, NEO_PIXEL_PIN20, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_center(RH_PIXEL_COUNT, NEO_PIXEL_PIN21, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_left(RH_PIXEL_COUNT, NEO_PIXEL_PIN22, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel back_right(RH_PIXEL_COUNT, NEO_PIXEL_PIN23, NEO_GRB + NEO_KHZ800);
 
 Adafruit_NeoPixel colorClass(30, ColorManagementFakeOin, NEO_GRB + NEO_KHZ800);
 char commandBuffer[MAX_CHARS];
 
-const int GLOBAL_BRIGHTNESS = 50;
 
 volatile unsigned long last_micros;
 int debouncing_time = 1;
 
-void Interrupt() {
-  if((long)(micros() - last_micros) >= debouncing_time * 1000) {
-    (*funcDecoder)++;
-    (*funcDecoder) = (*funcDecoder) % 6;
-    last_micros = micros();
-  }
-//    loop();
-}
+//void Interrupt() {
+//  if((long)(micros() - last_micros) >= debouncing_time * 1000) {
+//    (*funcDecoder)++;
+//    (*funcDecoder) = (*funcDecoder) % 6;
+//    last_micros = micros();
+//  }
+////    loop();
+//}
 
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN SKETCH FUNCTIONS

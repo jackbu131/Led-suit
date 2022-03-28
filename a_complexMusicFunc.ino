@@ -53,10 +53,10 @@ void complexSpectrumLoop() {
 // in the associated frequency window.
     float intensity = 0;
     float otherMean = 0;
-    for (int i = 0; i < NUM_OF_WINDOWS_FOR_COMPLEX; ++i) {
+    for (int i = 0, j = NUM_OF_WINDOWS_FOR_COMPLEX; i < NUM_OF_WINDOWS_FOR_COMPLEX; ++i, --j) {
         intensity = getIntensity(i, otherMean, intensity);
         uint32_t rgb = pixelHSVtoRGBColor(huesForComplex[i], 1.0, intensity, COMPLEX_COLOR_MODIFIER);
-        set_color_all_strips(i, rgb);
+        set_color_all_strips(j, rgb);
 //        Serial.println(rgb);
     }
     show_all();

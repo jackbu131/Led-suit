@@ -5,12 +5,13 @@
 int ZERO = 0;
 int *funcDecoder;
 int intensityForMusic = 7;
-//int intensity=4;
-double numOfColorSnake= 2.0;
-//const int PUSH_BUTTON_PIN1 = 23;
-//const int PUSH_BUTTON_PIN2 = 19;
-//const int PUSH_BUTTON_PIN3 = 17;
-//const int PUSH_BUTTON_PIN4 = 21;
+double numOfColorSnake = 2.0;
+
+
+const int GLOBAL_BRIGHTNESS = 65;
+const int touchSensorThreshold = 8000;
+const int RH_PIXEL_COUNT = 40;
+const int NUM_OF_WINDOWS_FOR_COMPLEX = 40; 
 
 
 const int NUM_OF_WINDOWS_FOR_BASIC_FOUR = 4;  
@@ -18,14 +19,13 @@ const int COLOR_MODIFIER = 60;
 float frequencyWindowForBasicFour[NUM_OF_WINDOWS_FOR_BASIC_FOUR+1];
 float huesForBasicFour[NUM_OF_WINDOWS_FOR_BASIC_FOUR];
 
-const int NUM_OF_WINDOWS_FOR_COMPLEX = 70;  
 const int COMPLEX_COLOR_MODIFIER = 60;
 float frequencyWindowForComplex[NUM_OF_WINDOWS_FOR_COMPLEX+1];
 float huesForComplex[NUM_OF_WINDOWS_FOR_COMPLEX];
 
 
 int SAMPLE_RATE_HZ = 8000;             // Sample rate of the audio in hertz.
-float SPECTRUM_MIN_DB = 30.0;          // Audio intensity (in decibels) that maps to low LED brightness.
+float SPECTRUM_MIN_DB = 14.0;          // Audio intensity (in decibels) that maps to low LED brightness.
 float SPECTRUM_MAX_DB = 60.0;          // Audio intensity (in decibels) that maps to high LED brightness.
 int LEDS_ENABLED = 1;                  // Control if the LED's should display the spectrum or not.  1 is true, 0 is false.  
      
@@ -50,13 +50,6 @@ const int NEO_PIXEL_PIN23 = 23;
 
 const int ColorManagementFakeOin = 30;
 
-const int RH_PIXEL_COUNT = 47;
-const int LH_PIXEL_COUNT = 41;
-const int RL_PIXEL_COUNT = 70;
-const int LL_PIXEL_COUNT = 80;
-const int B_PIXEL_COUNT = 74;
-const int HE_PIXEL_COUNT = 40;
-
 const int MAX_NUM_OF_LEDS = 70;
 
 
@@ -72,8 +65,8 @@ IntervalTimer touchSensorTimer;
 bool touchIsOn = false;
 int touchSensorValue = 0;
 int touchSensorOnCounter = 0;
-int touchSensorOffCounter = 0;
-const int touchSensorThreshold = 1500;
+int touchSensorOffCounter = 0; 
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // MAIN SKETCH FUNCTIONS
